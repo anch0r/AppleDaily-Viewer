@@ -34,17 +34,20 @@ function insertTW() {
             datatype: 'html',
             success: function (data) {
                 if ($('.mediabox').length <= 0) {
-                    var videoUrlLine = $('.mediabox', $(data)).text().match(new RegExp(/var videoUrl = '.*';/))[0];
-                    if (videoUrlLine !== 'undefined') {
-                        var videoUrl = videoUrlLine.substring(videoUrlLine.indexOf("'") + 1, videoUrlLine.lastIndexOf("'"));
-                        $('.thoracis').prepend(
-                            `<div class="mediabox">
-                                 <video width="100%" autoplay controls preload>
-                                     <source src="${videoUrl}"></source>
-                                 </video>
-                            </div>`
-                        );
-                    }
+					//potential exception of match() when getting a page without video 
+					if($('.mediabox', $(data)).text().match(new RegExp(/var videoUrl = '.*';/))) {
+						var videoUrlLine = $('.mediabox', $(data)).text().match(new RegExp(/var videoUrl = '.*';/))[0];
+						if (videoUrlLine !== 'undefined') {
+							var videoUrl = videoUrlLine.substring(videoUrlLine.indexOf("'") + 1, videoUrlLine.lastIndexOf("'"));
+							$('.thoracis').prepend(
+								`<div class="mediabox">
+									<video width="100%" autoplay controls preload>
+										<source src="${videoUrl}"></source>
+									</video>
+								</div>`
+							);
+						}
+					}	
                 }
                 if ($('.ndAritcle_headPic').length <= 0) {
                     var headPic = $('.ndAritcle_headPic', $(data));
